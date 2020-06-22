@@ -3,14 +3,18 @@
 module.exports = {
 
   development: {
-    client: 'sqlite3',
+    client: 'pg',
     useNullAsDefault: true,
     connection: {
-      filename: "./data/marketplace.db3"
+      connectionString: `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`,
+      ssl: { rejectUnauthorized: false }
     },
+    searchPath: ['marketplace', 'public'],
+    options: { schema: 'marketplace' },
     migrations: {
       directory: './data/migrations'
     },
+    pool: { min: 0, max: 7},
     seeds: {
       directory: './data/seeds'
     }
