@@ -33,7 +33,7 @@ router.post('/register', (req, res) => {
     }
 });
 
-router.get('/login', (req, res) => {
+router.post('/login', (req, res) => {
     const { email, password } = req.body;
 
     if (isValid(req.body)) {
