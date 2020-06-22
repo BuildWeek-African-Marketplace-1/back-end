@@ -3,8 +3,11 @@
 module.exports = {
 
   development: {
-    client: 'postgresql',
-    connection: process.env.DATABASE_URL,
+    client: 'sqlite3',
+    useNullAsDefault: true,
+    connection: {
+      filename: "./data/marketplace.db3"
+    },
     migrations: {
       directory: './data/migrations'
     },
@@ -27,19 +30,16 @@ module.exports = {
   },
 
   production: {
-    client: 'postgresql',
-    connection: process.env.DATABASE_URL,
+    client: 'pg',
+    connection: 'postgresql://localhost/marketplace',
     pool: {
       min: 2,
       max: 10
     },
     migrations: {
       tableName: 'knex_migrations',
-      directory: __dirname + '/data/migrations',
-    },
-    seeds: {
-      directory: __dirname + '/data/seeds',
     }
   }
 
 };
+// process.env.DATABASE_URL

@@ -15,6 +15,6 @@ module.exports = (req, res, next) => {
             }
         })
     } else {
-        res.status(401).json({ message: 'Please provide credentials to access this content' })
+        res.status(400).json({ message: 'Please provide credentials to access this content' })
     }
 }
