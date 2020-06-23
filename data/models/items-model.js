@@ -2,6 +2,7 @@ const db = require('../dbConfig');
 
 module.exports = {
     getAllItems,
+    getItemById,
     addItem,
     deleteItem,
     editItem
@@ -9,6 +10,10 @@ module.exports = {
 
 function getAllItems() {
     return db('items')
+}
+
+function getItemById(id) {
+    return db('items').where({ id }).first()
 }
 
 function addItem(item) {

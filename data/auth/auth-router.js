@@ -6,7 +6,7 @@ const router = require('express').Router();
 const Users = require('../models/users-model');
 const { isValid } = require('./auth-model');
 const constants = require('../config/constants');
-
+// add user - POSTMAN TESTED
 router.post('/register', (req, res) => {
     const credentials = req.body;
 
@@ -33,6 +33,7 @@ router.post('/register', (req, res) => {
     }
 });
 
+// log user in - POSTMAN TESTED
 router.post('/login', (req, res) => {
     const { email, password } = req.body;
 
