@@ -28,36 +28,52 @@ describe('Backend Endpoints', () => {
                     owner_account: 0
                 })
                 .set('Accept', 'application/json')
-                .expect('Content-Type', /json/)
                 .then(res => {
                     expect(res.status).toBe(201)
                 })
         })
     })
     describe('POST /api/auth/login', () => {
-        it('Should return message from invalid login credentials', () => {
-            return request(server)
-                .post('/api/auth/login')
-                .set('Accept', 'application/json')
-                .expect('Content-Type', /json/)
+        it('Should return message from invalid login credentials', async () => {
+            await request(server)
+                .post('/api/auth/register')
                 .send({
-                    email: 'fail@fail.com',
+                    first_name: 'Test',
+                    last_name: 'Test',
+                    email: 'test@test.com',
+                    password: '$2y$08$ISVunLvwR0hF1Ir5ofmbcugJjNGEn3ogp1G6MYHAuG2R8UI/w1vNK',
+                    owner_account: 0
+                })
+            const loginResponse = await request(server)
+                .post('/api/auth/login')
+                .send({
+                    email: 'test@test.com',
                     password: '$2y$08$ISVunLvwR0hF1Ir5ofmbcugJjNGEn3ogp1G6MYHAuG2R8UI/w1vNK'
                 })
-                .then(res => {
-                    expect(res.body).toHaveProperty('message')
-                })
+                expect(loginResponse.status).toBe(200)
         })
     })
     describe('GET /api/items', () => {
-        it('should return error because unauthorized access', () => {
-            return request(server)
-                .get('/api/users')
-                .set('Accept', 'application/json')
-                .expect('Content-Type', /json/)
-                .then(res => {
-                    expect(res.status).toBe(400)
+        it('should return error because unauthorized access', async () => {
+            await request(server)
+                .post('/api/auth/register')
+                .send({
+                    first_name: 'Test',
+                    last_name: 'Test',
+                    email: 'test@test.com',
+                    password: '$2y$08$ISVunLvwR0hF1Ir5ofmbcugJjNGEn3ogp1G6MYHAuG2R8UI/w1vNK',
+                    owner_account: 0
                 })
+            const loginResponse = await request(server)
+                .post('/api/auth/login')
+                .send({
+                    email: 'test@test.com',
+                    password: '$2y$08$ISVunLvwR0hF1Ir5ofmbcugJjNGEn3ogp1G6MYHAuG2R8UI/w1vNK'
+                })
+                const response = await request(server)
+                .get('/api/items')
+                .set({Authorization: loginResponse.body.token})
+                expect(response.status).toBe(200)
         })
     })
 
@@ -65,7 +81,7 @@ describe('Backend Endpoints', () => {
 
 // Endpoints needed to test:
 // REGISTER || DONE
-// LOGIN
+// LOGIN || DONE
 // / HOME TO VIEW API IS UP || DONE
 // ===========ITEMS==========
 // GET ITEMS || DONE
@@ -77,35 +93,5 @@ describe('Backend Endpoints', () => {
 // ADD USER
 // EDIT USER
 // DELETE USER
-
-// const db = require('./data/dbConfig');
-// const server = require('./server');
-
-// const request = require('supertest');
-// const userModel = require('./data/models/users-model');
-
-// describe('Endpoint testing', () => {
-//     describe('USERS Endpoints', () => {
-//         describe('Register User', () => {
-//             it('should return the email of new user || REGISTER', async () => {
-//                 await db('users').truncate();
-//                 let newUser = ({
-//                     id: 5,
-//                     first_name: 'Zoe',
-//                     last_name: 'Eoz',
-//                     email: 'zoe@zoe.com',
-//                     password: '$2y$08$ISVunLvwR0hF1Ir5ofmbcugJjNGEn3ogp1G6MYHAuG2R8UI/w1vNK',
-//                     owner_account: 0
-//                 })
-//                 let test = await userModel.add(newUser);
-//                 expect(test.email).toBe('zoe@zoe.com');
-//             })
-//             it('should find newUser by id and expect correct first_name', async () => {
-//                 let test = await userModel.findById(5);
-//                 expect(test.first_name).toBe('Zoe');
-//             })
-//         })
-//     })
-// })
 
 
