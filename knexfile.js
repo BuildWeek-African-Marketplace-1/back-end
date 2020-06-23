@@ -3,11 +3,10 @@
 module.exports = {
 
   development: {
-    client: 'pg',
+    client: 'sqlite3',
     useNullAsDefault: true,
     connection: {
-      connectionString: `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`,
-      ssl: { rejectUnauthorized: false }
+      filename: './data/marketplace.db3'
     },
     searchPath: ['marketplace', 'public'],
     options: { schema: 'marketplace' },
@@ -47,3 +46,20 @@ module.exports = {
 
 };
 // process.env.DATABASE_URL
+// development: {
+//   client: 'pg',
+//   useNullAsDefault: true,
+//   connection: {
+//     connectionString: `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`,
+//     ssl: { rejectUnauthorized: false }
+//   },
+//   searchPath: ['marketplace', 'public'],
+//   options: { schema: 'marketplace' },
+//   migrations: {
+//     directory: './data/migrations'
+//   },
+//   pool: { min: 0, max: 7},
+//   seeds: {
+//     directory: './data/seeds'
+//   }
+// }
