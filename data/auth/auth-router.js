@@ -40,7 +40,6 @@ router.post('/login', (req, res) => {
     if (isValid(req.body)) {
         Users.findBy({ email: email })
             .then(([user]) => {
-                console.log(user, 'user')
                 if (user && bcryptjs.compareSync(password, user.password)) {
                     const token = createToken(user);
                     res.status(200).json({ message: 'You are now logged in', token });
