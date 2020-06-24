@@ -10,8 +10,10 @@
     "start": "node index.js",
     "server": "nodemon index.js",
     "migrate": "knex migrate:latest",
+    "testmigrate": "knex migrate:latest --env=testing",
     "unmigrate": "knex migrate:rollback",
     "seed": "knex seed:run",
+    "testseed": "knex seed:run --env=testing",
     "test": "cross-env DB_ENV=testing jest --watch --runInBand"
   },
   "author": "",
